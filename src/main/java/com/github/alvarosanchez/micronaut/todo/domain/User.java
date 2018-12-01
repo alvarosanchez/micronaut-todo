@@ -11,6 +11,7 @@ public class User implements UserState {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique=true)
     private String username;
 
     @Column(name = "passwd")

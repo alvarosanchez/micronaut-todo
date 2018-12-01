@@ -29,8 +29,15 @@ class UserRepositoryTest {
         UserState userState = Flowable.fromPublisher(userRepository.findByUsername("user")).blockingFirst();
         Assertions.assertNotNull(((User)userState).getId());
         Assertions.assertEquals("user", userState.getUsername());
-        Assertions.assertEquals("pass", userState.getPassword());
+        Assertions.assertNotNull(userState.getPassword());
+    }
 
+    @Test
+    void testPasswordsAreEncoded(){
+        User user = new User("user", "pass");
+        user = userRepository.save(user);
+
+        Assertions.assertNotEquals("pass", user.getPassword());
     }
 
 }

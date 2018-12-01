@@ -1,5 +1,7 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
+import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
+import io.micronaut.security.authentication.providers.PasswordEncoder;
 import io.micronaut.security.authentication.providers.UserState;
 import io.micronaut.spring.tx.annotation.Transactional;
 import io.reactivex.Flowable;
@@ -7,18 +9,26 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.Collections;
+import java.util.List;
 
 @Singleton
 public class UserRepositoryJpaImpl implements UserRepository {
 
-    @PersistenceContext
     private EntityManager entityManager;
+    private PasswordEncoder passwordEncoder;
+
+    public UserRepositoryJpaImpl(@CurrentSession EntityManager entityManager, PasswordEncoder passwordEncoder) {
+        this.entityManager = entityManager;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     @Transactional
     public User save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.entityManager.persist(user);
+        this.entityManager.flush();
         return user;
     }
 
@@ -36,5 +46,11 @@ public class UserRepositoryJpaImpl implements UserRepository {
                 .setParameter("username", username)
                 .getSingleResult();
         return Flowable.just(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Publisher<List<String>> findAuthoritiesByUsername(String username) {
+        return Flowable.just(Collections.singletonList("ROLE_USER"));
     }
 }
