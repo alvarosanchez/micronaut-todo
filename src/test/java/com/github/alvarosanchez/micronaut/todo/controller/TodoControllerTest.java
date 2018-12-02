@@ -1,5 +1,6 @@
 package com.github.alvarosanchez.micronaut.todo.controller;
 
+import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
 import com.github.alvarosanchez.micronaut.todo.TodoClient;
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
@@ -15,21 +16,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 @MicronautTest
-public class TodoControllerTest {
+public class TodoControllerTest extends AbstractDatabaseTest {
 
     @Inject
     TodoClient todoClient;
-
-    @Inject
-    DataSource dataSource;
-
-    @AfterEach
-    void cleanup() throws SQLException {
-        Connection connection = dataSource.getConnection();
-        connection.createStatement().executeUpdate("delete from todo");
-        connection.createStatement().executeUpdate("delete from user");
-        connection.close();
-    }
 
     @Test
     void testAddTodos() {

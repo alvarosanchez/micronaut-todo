@@ -1,5 +1,6 @@
 package com.github.alvarosanchez.micronaut.todo.service;
 
+import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
 import com.github.alvarosanchez.micronaut.todo.domain.TodoRepository;
 import com.github.alvarosanchez.micronaut.todo.domain.User;
@@ -18,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
-class TodoServiceTest {
+class TodoServiceTest extends AbstractDatabaseTest {
 
     @Inject
     TodoService todoService;

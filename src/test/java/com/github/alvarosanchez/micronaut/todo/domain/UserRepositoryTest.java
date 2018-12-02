@@ -1,5 +1,6 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
+import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
 import io.micronaut.security.authentication.providers.UserState;
 import io.micronaut.test.annotation.MicronautTest;
 import io.reactivex.Flowable;
@@ -13,7 +14,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @MicronautTest
-class UserRepositoryTest {
+class UserRepositoryTest extends AbstractDatabaseTest {
 
     @Inject
     UserRepository userRepository;

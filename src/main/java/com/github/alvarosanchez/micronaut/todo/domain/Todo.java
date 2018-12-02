@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Todo implements Comparable<Todo> {
+public class Todo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -70,27 +70,11 @@ public class Todo implements Comparable<Todo> {
     }
 
     @Override
-    public int compareTo(Todo o) {
-        return this.getId().compareTo(o.getId());
-    }
-
-    @Override
-    public String toString() {
-        return this.text;
-    }
-
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Todo todo = (Todo) o;
-        return id.equals(todo.id) &&
-                Objects.equals(text, todo.text);
+        return id.equals(todo.id) && text.equals(todo.text);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

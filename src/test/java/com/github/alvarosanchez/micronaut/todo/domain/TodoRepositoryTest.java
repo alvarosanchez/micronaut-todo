@@ -1,5 +1,6 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
+import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
 import io.micronaut.test.annotation.MicronautTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @MicronautTest
-public class TodoRepositoryTest {
+public class TodoRepositoryTest extends AbstractDatabaseTest {
 
     @Inject
     TodoRepository todoRepository;

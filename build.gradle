@@ -8,9 +8,10 @@ plugins {
 
 apply plugin:"application"
 apply plugin:"java"
+apply plugin: "jacoco"
 
 version "0.1"
-group "micronaut.todo"
+group "com.github.alvarosanchez.micronaut"
 
 repositories {
     mavenLocal()
@@ -51,7 +52,7 @@ shadowJar {
 
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
-mainClassName = "micronaut.todo.Application"
+mainClassName = "com.github.alvarosanchez.micronaut.todo.Application"
 tasks.withType(JavaCompile){
     options.encoding = "UTF-8"
     options.compilerArgs.add('-parameters')
@@ -60,3 +61,36 @@ tasks.withType(JavaCompile){
 test {
     useJUnitPlatform()
 }
+
+testlogger {
+    theme 'mocha' // project level
+    slowThreshold 3_000
+}
+
+jacoco {
+    toolVersion = "0.8.2"
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.79
+            }
+        }
+    }
+}
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'com/github/alvarosanchez/micronaut/todo/**/$*',
+                    'com/github/alvarosanchez/micronaut/todo/Application.class'
+            ])
+        })
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
+build.finalizedBy jacocoTestReport
