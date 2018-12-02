@@ -2,11 +2,14 @@ package com.github.alvarosanchez.micronaut.todo.service;
 
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
 import com.github.alvarosanchez.micronaut.todo.domain.TodoRepository;
+import com.github.alvarosanchez.micronaut.todo.domain.User;
 import com.github.alvarosanchez.micronaut.todo.domain.UserRepository;
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 import javax.inject.Singleton;
+import java.util.List;
 
 @Singleton
 public class TodoService {
@@ -31,6 +34,12 @@ public class TodoService {
         Todo todo = new Todo();
         todo.setId(todoId);
         return Maybe.just(todoRepository.complete(todo));
+    }
+
+    public Flowable<Todo> findAllByUser(String username) {
+        return Single.fromPublisher(userRepository.findByUsername(username))
+                .map(userState -> todoRepository.findAllByUser((User) userState))
+                .flattenAsFlowable(todos -> todos);
     }
 
 }

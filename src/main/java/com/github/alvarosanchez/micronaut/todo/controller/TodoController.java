@@ -8,12 +8,14 @@ import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.validation.Validated;
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
 import javax.annotation.Nullable;
 import java.security.Principal;
+import java.util.List;
 
-@Controller("/todo")
+@Controller("/todos")
 @Validated
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class TodoController {
@@ -22,6 +24,11 @@ public class TodoController {
 
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
+    }
+
+    @Get
+    public Flowable<Todo> listTodos(@Nullable Principal principal) {
+        return this.todoService.findAllByUser(principal.getName());
     }
 
     @Post

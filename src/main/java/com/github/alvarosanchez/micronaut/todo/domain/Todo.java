@@ -1,12 +1,12 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
 import io.micronaut.security.authentication.providers.UserState;
-import org.reactivestreams.Subscriber;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-public class Todo {
+public class Todo implements Comparable<Todo> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,5 +67,30 @@ public class Todo {
     public Todo withUserState(UserState userState) {
         setUser((User) userState);
         return this;
+    }
+
+    @Override
+    public int compareTo(Todo o) {
+        return this.getId().compareTo(o.getId());
+    }
+
+    @Override
+    public String toString() {
+        return this.text;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Todo todo = (Todo) o;
+        return id.equals(todo.id) &&
+                Objects.equals(text, todo.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
