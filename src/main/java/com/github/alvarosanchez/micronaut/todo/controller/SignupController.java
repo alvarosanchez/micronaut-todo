@@ -1,7 +1,7 @@
 package com.github.alvarosanchez.micronaut.todo.controller;
 
 import com.github.alvarosanchez.micronaut.todo.domain.User;
-import com.github.alvarosanchez.micronaut.todo.domain.UserRepository;
+import com.github.alvarosanchez.micronaut.todo.repository.UserRepository;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;

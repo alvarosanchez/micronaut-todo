@@ -1,5 +1,7 @@
-package com.github.alvarosanchez.micronaut.todo.domain;
+package com.github.alvarosanchez.micronaut.todo.repository;
 
+import com.github.alvarosanchez.micronaut.todo.domain.Todo;
+import com.github.alvarosanchez.micronaut.todo.domain.User;
 import io.micronaut.spring.tx.annotation.Transactional;
 
 import javax.inject.Singleton;

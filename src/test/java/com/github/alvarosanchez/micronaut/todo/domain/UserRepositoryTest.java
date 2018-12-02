@@ -1,6 +1,7 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
 import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
+import com.github.alvarosanchez.micronaut.todo.repository.UserRepository;
 import io.micronaut.security.authentication.providers.UserState;
 import io.micronaut.test.annotation.MicronautTest;
 import io.reactivex.Flowable;

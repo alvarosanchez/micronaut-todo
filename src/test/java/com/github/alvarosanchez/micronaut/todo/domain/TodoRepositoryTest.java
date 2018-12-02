@@ -1,6 +1,8 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
 import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
+import com.github.alvarosanchez.micronaut.todo.repository.TodoRepository;
+import com.github.alvarosanchez.micronaut.todo.repository.UserRepository;
 import io.micronaut.test.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 

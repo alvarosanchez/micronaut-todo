@@ -2,9 +2,9 @@ package com.github.alvarosanchez.micronaut.todo.service;
 
 import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
-import com.github.alvarosanchez.micronaut.todo.domain.TodoRepository;
+import com.github.alvarosanchez.micronaut.todo.repository.TodoRepository;
 import com.github.alvarosanchez.micronaut.todo.domain.User;
-import com.github.alvarosanchez.micronaut.todo.domain.UserRepository;
+import com.github.alvarosanchez.micronaut.todo.repository.UserRepository;
 import io.micronaut.test.annotation.MicronautTest;
 import io.reactivex.Maybe;
 import org.junit.jupiter.api.Test;

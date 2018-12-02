@@ -1,5 +1,6 @@
-package com.github.alvarosanchez.micronaut.todo.domain;
+package com.github.alvarosanchez.micronaut.todo.repository;
 
+import com.github.alvarosanchez.micronaut.todo.domain.User;
 import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession;
 import io.micronaut.security.authentication.providers.PasswordEncoder;
 import io.micronaut.security.authentication.providers.UserState;
