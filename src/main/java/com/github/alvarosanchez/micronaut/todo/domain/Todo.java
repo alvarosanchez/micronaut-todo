@@ -1,5 +1,8 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
+import io.micronaut.security.authentication.providers.UserState;
+import org.reactivestreams.Subscriber;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +14,7 @@ public class Todo {
 
     private String text;
 
-    private Boolean complete;
+    private Boolean complete = false;
 
     @OneToOne
     private User user;
@@ -20,9 +23,13 @@ public class Todo {
     }
 
     public Todo(String text, Boolean complete, User user) {
-        this.text = text;
+        this(text);
         this.complete = complete;
         this.user = user;
+    }
+
+    public Todo(String text) {
+        this.text = text;
     }
 
     public Long getId() {
@@ -55,5 +62,10 @@ public class Todo {
 
     public void setComplete(Boolean complete) {
         this.complete = complete;
+    }
+
+    public Todo withUserState(UserState userState) {
+        setUser((User) userState);
+        return this;
     }
 }

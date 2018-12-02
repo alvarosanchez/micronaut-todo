@@ -1,5 +1,6 @@
 package com.github.alvarosanchez.micronaut.todo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.security.authentication.providers.UserState;
 
 import javax.persistence.*;
@@ -43,6 +44,7 @@ public class User implements UserState {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -55,6 +57,7 @@ public class User implements UserState {
      * Enabled by default
      */
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
@@ -63,6 +66,7 @@ public class User implements UserState {
      * Non expired by default
      */
     @Override
+    @JsonIgnore
     public boolean isAccountExpired() {
         return false;
     }
@@ -71,6 +75,7 @@ public class User implements UserState {
      * Non locked by default
      */
     @Override
+    @JsonIgnore
     public boolean isAccountLocked() {
         return false;
     }
@@ -79,6 +84,7 @@ public class User implements UserState {
      * Password not expired by default
      */
     @Override
+    @JsonIgnore
     public boolean isPasswordExpired() {
         return false;
     }

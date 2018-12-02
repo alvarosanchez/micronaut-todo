@@ -29,9 +29,10 @@ datasources:
     password: ''    
 jpa:
   default:
+    packages-to-scan:
+      - "com.github.alvarosanchez.micronaut.todo.domain"
     properties:
       hibernate:
         hbm2ddl:
           auto: update
-        show_sql: true
 
