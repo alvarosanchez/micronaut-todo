@@ -27,4 +27,10 @@ public class TodoService {
                 .toMaybe();
     }
 
+    public Maybe<Todo> complete(Long todoId) {
+        Todo todo = new Todo();
+        todo.setId(todoId);
+        return Maybe.just(todoRepository.complete(todo));
+    }
+
 }

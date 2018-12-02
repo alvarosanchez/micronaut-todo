@@ -24,4 +24,17 @@ public class TodoControllerTest {
         Assertions.assertNotNull(todo.getId());
     }
 
+    @Test
+    void testCompleteTodos() {
+        todoClient.signup("user", "pass");
+        BearerAccessRefreshToken token = todoClient.login("user", "pass");
+        String accessToken = "Bearer " + token.getAccessToken();
+        Todo todo = todoClient.addTodo(accessToken, "Do something");
+
+        Todo completed = todoClient.complete(accessToken, todo.getId());
+
+        Assertions.assertTrue(completed.isComplete());
+
+    }
+
 }
