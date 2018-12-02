@@ -4,14 +4,11 @@ import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
 import io.micronaut.security.authentication.providers.UserState;
 import io.micronaut.test.annotation.MicronautTest;
 import io.reactivex.Flowable;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
 class UserRepositoryTest extends AbstractDatabaseTest {
@@ -19,22 +16,12 @@ class UserRepositoryTest extends AbstractDatabaseTest {
     @Inject
     UserRepository userRepository;
 
-    @Inject
-    DataSource dataSource;
-
-    @AfterEach
-    void cleanup() throws SQLException {
-        Connection connection = dataSource.getConnection();
-        connection.createStatement().executeUpdate("delete from todo");
-        connection.createStatement().executeUpdate("delete from user");
-        connection.close();
-    }
-
     @Test
     void testSaveUsers() {
         User user = new User("user", "pass");
         user = userRepository.save(user);
-        Assertions.assertNotNull(user.getId());
+
+        assertNotNull(user.getId());
     }
 
     @Test
@@ -43,9 +30,13 @@ class UserRepositoryTest extends AbstractDatabaseTest {
         userRepository.save(user);
 
         UserState userState = Flowable.fromPublisher(userRepository.findByUsername("user")).blockingFirst();
-        Assertions.assertNotNull(((User)userState).getId());
-        Assertions.assertEquals("user", userState.getUsername());
-        Assertions.assertNotNull(userState.getPassword());
+
+        assertAll("user",
+            () -> assertNotNull(((User)userState).getId()),
+            () -> assertEquals("user", userState.getUsername()),
+            () -> assertNotNull(userState.getPassword())
+        );
+
     }
 
     @Test
@@ -53,7 +44,7 @@ class UserRepositoryTest extends AbstractDatabaseTest {
         User user = new User("user", "pass");
         user = userRepository.save(user);
 
-        Assertions.assertNotEquals("pass", user.getPassword());
+        assertNotEquals("pass", user.getPassword());
     }
 
 }

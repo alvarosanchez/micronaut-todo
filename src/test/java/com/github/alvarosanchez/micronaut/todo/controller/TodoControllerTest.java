@@ -5,15 +5,12 @@ import com.github.alvarosanchez.micronaut.todo.TodoClient;
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.micronaut.test.annotation.MicronautTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
 public class TodoControllerTest extends AbstractDatabaseTest {
@@ -27,7 +24,7 @@ public class TodoControllerTest extends AbstractDatabaseTest {
         BearerAccessRefreshToken token = todoClient.login("user", "pass");
 
         Todo todo = todoClient.addTodo("Bearer " + token.getAccessToken(), "Do something");
-        Assertions.assertNotNull(todo.getId());
+        assertNotNull(todo.getId());
     }
 
     @Test
@@ -39,7 +36,7 @@ public class TodoControllerTest extends AbstractDatabaseTest {
 
         Todo completed = todoClient.complete(accessToken, todo.getId());
 
-        Assertions.assertTrue(completed.isComplete());
+        assertTrue(completed.isComplete());
     }
 
     @Test
@@ -51,7 +48,7 @@ public class TodoControllerTest extends AbstractDatabaseTest {
         Todo todo2 = todoClient.addTodo(accessToken, "Do something else");
         Todo todo3 = todoClient.addTodo(accessToken, "Do something more");
 
-        Assertions.assertIterableEquals(todoClient.listTodos(accessToken), Arrays.asList(todo1, todo2, todo3));
+        assertIterableEquals(todoClient.listTodos(accessToken), Arrays.asList(todo1, todo2, todo3));
     }
 
 }

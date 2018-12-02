@@ -2,12 +2,13 @@ package com.github.alvarosanchez.micronaut.todo.domain;
 
 import com.github.alvarosanchez.micronaut.todo.AbstractDatabaseTest;
 import io.micronaut.test.annotation.MicronautTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
 public class TodoRepositoryTest extends AbstractDatabaseTest {
@@ -26,7 +27,7 @@ public class TodoRepositoryTest extends AbstractDatabaseTest {
         Todo todo = new Todo("Do something", false, user);
         todo = todoRepository.save(todo);
 
-        Assertions.assertNotNull(todo.getId());
+        assertNotNull(todo.getId());
     }
 
     @Test
@@ -42,7 +43,7 @@ public class TodoRepositoryTest extends AbstractDatabaseTest {
         todoRepository.save(new Todo("Todo 5", false, user2));
 
         List<Todo> user1Todos = todoRepository.findAllByUser(user1);
-        Assertions.assertIterableEquals(user1Todos, Arrays.asList(todo1, todo2, todo3));
+        assertIterableEquals(user1Todos, Arrays.asList(todo1, todo2, todo3));
     }
 
     @Test
@@ -55,7 +56,7 @@ public class TodoRepositoryTest extends AbstractDatabaseTest {
 
         todoRepository.complete(todo);
 
-        Assertions.assertTrue(todoRepository.findAllByUser(user).get(0).isComplete());
+        assertTrue(todoRepository.findAllByUser(user).get(0).isComplete());
     }
 
 }
