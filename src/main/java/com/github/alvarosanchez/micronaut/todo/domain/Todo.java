@@ -3,7 +3,6 @@ package com.github.alvarosanchez.micronaut.todo.domain;
 import io.micronaut.security.authentication.providers.UserState;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class Todo {

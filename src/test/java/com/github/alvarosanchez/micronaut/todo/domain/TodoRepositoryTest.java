@@ -45,7 +45,8 @@ public class TodoRepositoryTest extends AbstractDatabaseTest {
         todoRepository.save(new Todo("Todo 5", false, user2));
 
         List<Todo> user1Todos = todoRepository.findAllByUser(user1);
-        assertIterableEquals(user1Todos, Arrays.asList(todo1, todo2, todo3));
+
+        assertIterableEquals(Arrays.asList(todo1, todo2, todo3), user1Todos);
     }
 
     @Test
@@ -60,5 +61,6 @@ public class TodoRepositoryTest extends AbstractDatabaseTest {
 
         assertTrue(todoRepository.findAllByUser(user).get(0).isComplete());
     }
+
 
 }

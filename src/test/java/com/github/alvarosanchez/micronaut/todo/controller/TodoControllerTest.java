@@ -8,7 +8,6 @@ import com.github.alvarosanchez.micronaut.todo.event.TodoEventType;
 import io.micronaut.http.sse.Event;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.micronaut.test.annotation.MicronautTest;
-import io.reactivex.Flowable;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -25,9 +24,7 @@ public class TodoControllerTest extends AbstractDatabaseTest {
 
     @Test
     void testAddTodos() {
-        todoClient.signup("user", "pass");
-        BearerAccessRefreshToken token = todoClient.login("user", "pass");
-        String accessToken = "Bearer " + token.getAccessToken();
+        String accessToken = signupAndLogin();
 
         Todo todo = todoClient.addTodo(accessToken, "Do something");
         assertNotNull(todo.getId());
@@ -35,9 +32,7 @@ public class TodoControllerTest extends AbstractDatabaseTest {
 
     @Test
     void testCompleteTodos() {
-        todoClient.signup("user", "pass");
-        BearerAccessRefreshToken token = todoClient.login("user", "pass");
-        String accessToken = "Bearer " + token.getAccessToken();
+        String accessToken = signupAndLogin();
         Todo todo = todoClient.addTodo(accessToken, "Do something");
 
         Todo completed = todoClient.complete(accessToken, todo.getId());
@@ -47,21 +42,17 @@ public class TodoControllerTest extends AbstractDatabaseTest {
 
     @Test
     void testListTodos() {
-        todoClient.signup("user", "pass");
-        BearerAccessRefreshToken token = todoClient.login("user", "pass");
-        String accessToken = "Bearer " + token.getAccessToken();
+        String accessToken = signupAndLogin();
         Todo todo1 = todoClient.addTodo(accessToken, "Do something");
         Todo todo2 = todoClient.addTodo(accessToken, "Do something else");
         Todo todo3 = todoClient.addTodo(accessToken, "Do something more");
 
-        assertIterableEquals(todoClient.listTodos(accessToken), Arrays.asList(todo1, todo2, todo3));
+        assertIterableEquals(Arrays.asList(todo1, todo2, todo3), todoClient.listTodos(accessToken));
     }
 
     @Test
     void testWatchTodos() {
-        todoClient.signup("user", "pass");
-        BearerAccessRefreshToken token = todoClient.login("user", "pass");
-        String accessToken = "Bearer " + token.getAccessToken();
+        String accessToken = signupAndLogin();
 
         Todo todo1 = todoClient.addTodo(accessToken, "Do something");
         Todo todo2 = todoClient.addTodo(accessToken, "Do something else");
@@ -77,6 +68,12 @@ public class TodoControllerTest extends AbstractDatabaseTest {
         );
 
         todoClient.complete(accessToken, todo2.getId());
+    }
+
+    private String signupAndLogin() {
+        todoClient.signup("user", "pass");
+        BearerAccessRefreshToken token = todoClient.login("user", "pass");
+        return "Bearer " + token.getAccessToken();
     }
 
 }

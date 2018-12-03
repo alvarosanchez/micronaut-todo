@@ -1,8 +1,8 @@
 package com.github.alvarosanchez.micronaut.todo.service;
 
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
-import com.github.alvarosanchez.micronaut.todo.repository.TodoRepository;
 import com.github.alvarosanchez.micronaut.todo.domain.User;
+import com.github.alvarosanchez.micronaut.todo.repository.TodoRepository;
 import com.github.alvarosanchez.micronaut.todo.repository.UserRepository;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;

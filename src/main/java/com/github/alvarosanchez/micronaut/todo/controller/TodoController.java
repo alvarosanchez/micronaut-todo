@@ -1,6 +1,5 @@
 package com.github.alvarosanchez.micronaut.todo.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
 import com.github.alvarosanchez.micronaut.todo.event.TodoEvent;
 import com.github.alvarosanchez.micronaut.todo.event.TodoEventType;
@@ -19,7 +18,8 @@ import javax.annotation.Nullable;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Controller("/todos")
 @Validated
