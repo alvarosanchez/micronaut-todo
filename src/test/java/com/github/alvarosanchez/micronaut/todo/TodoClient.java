@@ -1,14 +1,18 @@
 package com.github.alvarosanchez.micronaut.todo;
 
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
+import com.github.alvarosanchez.micronaut.todo.event.TodoEvent;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Put;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.http.sse.Event;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
+import io.reactivex.Flowable;
 
 import java.util.List;
 
@@ -29,5 +33,8 @@ public interface TodoClient {
 
     @Put("/todos/{id}")
     Todo complete(@Header("Authorization") String accessToken, @Parameter Long id);
+
+    @Get(value = "/todos/watch", processes = MediaType.TEXT_EVENT_STREAM)
+    Flowable<Event<TodoEvent>> watch(@Header("Authorization") String accessToken);
 
 }
