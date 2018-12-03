@@ -9,6 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * A {@link TodoRepository} implementation using JPA
+ */
 @Singleton
 public class TodoRepositoryJpaImpl implements TodoRepository {
 

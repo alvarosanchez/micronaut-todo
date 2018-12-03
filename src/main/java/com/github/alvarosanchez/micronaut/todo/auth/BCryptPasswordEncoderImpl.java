@@ -5,6 +5,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.inject.Singleton;
 
+/**
+ * A {@link PasswordEncoder} that delegates to {@link BCryptPasswordEncoder}
+ */
 @Singleton
 public class BCryptPasswordEncoderImpl implements PasswordEncoder {
 

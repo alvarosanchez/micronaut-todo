@@ -10,6 +10,9 @@ import io.reactivex.Single;
 
 import javax.inject.Singleton;
 
+/**
+ * Service helper for operations regarding a {@link Todo}
+ */
 @Singleton
 public class TodoService {
 
@@ -21,6 +24,9 @@ public class TodoService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Inserts a {@link Todo}
+     */
     public Maybe<Todo> addTodo(String username, String text) {
         Todo todo = new Todo(text);
         return Single.fromPublisher(userRepository.findByUsername(username))
@@ -29,12 +35,18 @@ public class TodoService {
                 .toMaybe();
     }
 
+    /**
+     * Marks the to-do with the given ID as complete
+     */
     public Maybe<Todo> complete(Long todoId) {
         Todo todo = new Todo();
         todo.setId(todoId);
         return Maybe.just(todoRepository.complete(todo));
     }
 
+    /**
+     * Finds all to-do's for the given user
+     */
     public Flowable<Todo> findAllByUser(String username) {
         return Single.fromPublisher(userRepository.findByUsername(username))
                 .map(userState -> todoRepository.findAllByUser((User) userState))

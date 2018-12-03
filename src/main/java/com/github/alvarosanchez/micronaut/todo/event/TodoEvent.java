@@ -2,6 +2,9 @@ package com.github.alvarosanchez.micronaut.todo.event;
 
 import com.github.alvarosanchez.micronaut.todo.domain.Todo;
 
+/**
+ * An event ocurred with regards to a to-do item
+ */
 public class TodoEvent {
 
     private TodoEventType eventType;

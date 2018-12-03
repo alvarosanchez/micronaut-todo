@@ -13,6 +13,9 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A {@link UserRepository} implementation using JPA
+ */
 @Singleton
 public class UserRepositoryJpaImpl implements UserRepository {
 
