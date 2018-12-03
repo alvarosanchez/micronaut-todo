@@ -1,0 +1,145 @@
+= Micronaut TODO application
+
+Sample application to showcase some of the features of the http://micronaut.io[Micronaut] framework. It is a RESTful
+API to manage a to-do list.
+
+== Running the application
+
+To run the tests and the JaCoCo report:
+
+    ./gradlew check jacocoTestReport
+
+The project has ~100% test coverage.
+
+Alternatively, it can be run locally as a service:
+
+    ./gradlew run
+
+The server will listen on `localhost:8080`.
+
+== Endpoints
+
+=== User operations
+
+==== `POST /signup`: registers a user
+
+Request body:
+
+[source,json]
+----
+{"username": "user", "password":"pass"}
+----
+
+Response:
+
+----
+HTTP/1.1 201 Created
+----
+
+==== `POST /login`: authenticates a user
+
+Request body:
+
+[source,json]
+----
+{"username": "user", "password":"pass"}
+----
+
+Response:
+
+[source,json]
+----
+{
+  "username": "user",
+  "roles": [
+    "ROLE_USER"
+  ],
+  "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwibmJmIjoxNTQzODE5ODgyLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoibWljcm9uYXV0LXRvZG8iLCJleHAiOjE1NDM4MjM0ODIsImlhdCI6MTU0MzgxOTg4Mn0.dqAA-RBombYvXMFKx1TQ74QhENdQtCSQDi_JNfRwxxQ",
+  "refresh_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwibmJmIjoxNTQzODE5ODgyLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoibWljcm9uYXV0LXRvZG8iLCJpYXQiOjE1NDM4MTk4ODJ9.F_j4dvbDWs0pNOZcpPbnb2WHAV0xmw4s9VJoW2XoVwU",
+  "expires_in": 3600,
+  "token_type": "Bearer"
+}
+----
+
+Access tokens can be user to make calls to the to-do endpoints. They last 1 hour, and can be refreshed using the
+refresh token.
+
+=== To-do operations
+
+All of the endpoints below require authentication, which can be performed by passing an access token with a request
+header:
+
+    Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
+
+==== `GET /todos`: retrieves all to-do's for the current user
+
+Response:
+
+[source,json]
+----
+[{
+	"id": 5,
+	"text": "Do something",
+	"complete": false,
+	"user": {
+		"id": 4,
+		"username": "user"
+	}
+}, {
+	"id": 6,
+	"text": "Do something else",
+	"complete": false,
+	"user": {
+		"id": 4,
+		"username": "user"
+	}
+}, {
+	"id": 7,
+	"text": "Do something more",
+	"complete": false,
+	"user": {
+		"id": 4,
+		"username": "user"
+	}
+}]
+----
+
+==== `POST /todos`: creates a to-do
+
+Request body:
+
+    {"text":"Do something more"}
+
+
+Response:
+
+    {"id":7,"text":"Do something more","complete":false,"user":{"id":4,"username":"user"}}
+
+
+==== `PUT /todos/{id}`: marks a to-do as complete
+
+Response:
+
+    {"id":11,"text":"Do something","complete":true,"user":{"id":10,"username":"user"}}
+
+
+==== `GET /todos/watch`: watches for to-do events
+
+A client watching for to-do's will receive Server-Sent Events (`content-type: text/event-stream`) as they occur in the
+systems. Possible events are when to-do's are created and when to-do's are completed.
+
+Sample response:
+
+[source,json]
+----
+data: {"eventType":"CREATED","todo":{"id":5,"text":"todo","complete":false,"user":{"id":1,"username":"user"}}}
+
+data: {"eventType":"CREATED","todo":{"id":6,"text":"todo","complete":false,"user":{"id":1,"username":"user"}}}
+
+data: {"eventType":"COMPLETED","todo":{"id":5,"text":"todo","complete":true,"user":{"id":1,"username":"user"}}}
+----
+
+As this is a sample application and to avoid to introduce external dependencies like Redis/etc, the implementation uses
+a `java.util.concurrent.BlockingQueue` per user to store the events. The endpoint generates a
+`io.reactivex.Flowable` from an emitter that emits events as soon as they are taken (retrieved and removed) from the
+queue.

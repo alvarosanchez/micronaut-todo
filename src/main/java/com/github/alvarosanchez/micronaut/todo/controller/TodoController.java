@@ -16,9 +16,9 @@ import io.reactivex.Maybe;
 
 import javax.annotation.Nullable;
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Controller("/todos")
@@ -32,7 +32,7 @@ public class TodoController {
 
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
-        this.events = new HashMap<>();
+        this.events = new ConcurrentHashMap<>();
     }
 
     @Get
